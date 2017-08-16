@@ -1,0 +1,28 @@
+# What is the title of the movie, rated PG-13 and released in 2013 that won no awards?
+# http://stackoverflow.com/questions/8136652/query-mongodb-on-month-day-year-of-a-datetime
+
+var start = new Date(2013, 1, 1);
+var end = new Date(2013, 12, 31);
+
+> db.movieDetails.find({ "rated": "PG-13", "released": { $gte: start, $lt: end }, "awards.wins": 0 }).pretty()
+
+# What is the title of the first movie returned for a query that selects all movies listing "Sweden" second among countries of origin.
+
+> db.movieDetails.findOne({ "countries.1": "Sweden" })
+
+# What document would you include as the second argument to a call to find() in order to project the title of each query result and only the title? 
+
+{ "title": 1, "_id": 0 }
+
+# How many documents in our movieDetails collection are listed as falling into just the following two genres: "Comedy" and "Crime" with "Comedy" listed first.
+
+> db.movieDetails.find( { 
+$and: [ 
+{ "genres.0": "Comedy" }, 
+{ "genres": "Crime"},
+{ "genres": { $size: 2} } 
+] } )
+
+# As a follow up to the previous question, how many documents in the movieDetails collection list both "Comedy" and "Crime" as genres regardless of how many other genres are listed?
+
+> db.movieDetails.find( { $and: [  { "genres": "Comedy" },  { "genres": "Crime"} ] } ).count()
